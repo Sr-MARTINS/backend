@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UsuariosRepository::class)]
-class Usuarios
+class Usuarios 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,10 +27,16 @@ class Usuarios
     #[ORM\Column(type: 'boolean')]
     private bool $is_admin = false;
 
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $updatedAt = null;
+
     /**
      * @var Collection<int, Listas>
      */
-    #[ORM\OneToMany(targetEntity: Listas::class, mappedBy: 'usuarios', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Listas::class, mappedBy: 'usuario_id', orphanRemoval: true)]
     private Collection $listas;
 
     public function __construct()
@@ -89,6 +95,29 @@ class Usuarios
         $this->is_admin = $isAdmin;
         return $this;
     }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
 
     /**
      * @return Collection<int, Listas>
