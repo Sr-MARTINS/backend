@@ -16,6 +16,24 @@ class UsuariosRepository extends ServiceEntityRepository
         parent::__construct($registry, Usuarios::class);
     }
 
+    public function add(Usuarios $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Usuarios $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+              $this->getEntityManager()->flush();
+        }
+    }
+
     //    /**
     //     * @return Usuarios[] Returns an array of Usuarios objects
     //     */

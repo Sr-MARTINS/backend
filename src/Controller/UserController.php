@@ -50,7 +50,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/users/update/{id}', name: 'user_update', methods: ['PUT'])]
-    public function update( int $id, Request $request,
+    public function update( $id, Request $request,
      ManagerRegistry $doctrine,
      UsuariosRepository $usuariosRepository,
      UserPasswordHasherInterface $passwordHasher): JsonResponse
@@ -75,5 +75,15 @@ final class UserController extends AbstractController
         return $this->json([
             'message' => 'User edit successfully',
         ], 201);
+    }
+
+    #[Route('/users/delete/{id}', name: 'user_delete', methods: ['DELETE'])]
+    public function delete( $id, UsuariosRepository $usuariosRepository): JsonResponse
+    {
+        $user = $usuariosRepository->find($id);
+
+        $usuariosRepository->remove($user, true);
+
+        return $this->json([ 'message' => 'User delet successfully']);
     }
 }
