@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Usuarios;
 use App\Repository\UsuariosRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,8 +24,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/users/create', name: 'user_create', methods: ['POST'])]
-    public function create( Request $request,
-     EntityManagerInterface $entityManagerInterface,
+    public function create( Request $request, EntityManagerInterface $entityManagerInterface,
      UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -46,6 +46,34 @@ final class UserController extends AbstractController
 
         return $this->json([
             'message' => 'User created successfully',
+        ], 201);
+    }
+
+    #[Route('/users/update/{id}', name: 'user_update', methods: ['PUT'])]
+    public function update( int $id, Request $request,
+     ManagerRegistry $doctrine,
+     UsuariosRepository $usuariosRepository,
+     UserPasswordHasherInterface $passwordHasher): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $user = $usuariosRepository->find($id);
+
+        if (!$user) {
+            return $this->json(['error' => 'Usuário não encontrado'], 404);
+        }
+
+        $user->setName($data['name']);
+        $user->setEmail($data['email']);
+        $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
+        $user->setPassword($hashedPassword);
+
+        $user->setUpdatedAt(new \DateTime('now', new \DateTimeZone('America/Sao_Paulo')));
+
+        $doctrine->getManager()->flush();
+
+        return $this->json([
+            'message' => 'User edit successfully',
         ], 201);
     }
 }
