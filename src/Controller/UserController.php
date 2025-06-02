@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UserController extends AbstractController
 {
@@ -22,7 +23,9 @@ final class UserController extends AbstractController
     }
 
     #[Route('/users/create', name: 'user_create', methods: ['POST'])]
-    public function create( Request $request, EntityManagerInterface $entityManager): JsonResponse
+    public function create( Request $request,
+     EntityManagerInterface $entityManagerInterface,
+     UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -31,15 +34,15 @@ final class UserController extends AbstractController
         $user->setEmail($data['email']);
         $user->setPassword($data['password']);
 
-        // $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
-        // $user->setPassword($hashedPassword);
+        $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
+        $user->setPassword($hashedPassword);
 
         $now = new \DateTime('now', new \DateTimeZone('America/Sao_Paulo'));
         $user->setCreatedAt($now);
         $user->setUpdatedAt($now);
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+        $entityManagerInterface->persist($user);
+        $entityManagerInterface->flush();
 
         return $this->json([
             'message' => 'User created successfully',
