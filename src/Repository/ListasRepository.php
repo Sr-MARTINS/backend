@@ -16,6 +16,24 @@ class ListasRepository extends ServiceEntityRepository
         parent::__construct($registry, Listas::class);
     }
 
+    public function add(Listas $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Listas $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+              $this->getEntityManager()->flush();
+        }
+    }
+
     //    /**
     //     * @return Listas[] Returns an array of Listas objects
     //     */

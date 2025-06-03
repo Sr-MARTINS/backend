@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ListasRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ListasRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ListasRepository::class)]
 class Listas
@@ -15,20 +16,30 @@ class Listas
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups('user')]
     #[ORM\Column(length: 150)]
     private ?string $titulo = null;
 
     #[ORM\ManyToOne(inversedBy: 'listas')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Usuarios $usuario_id = null;
+    private ?Usuarios $usuario = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $is_publico = false;
 
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $updatedAt = null;
+
+    
+
     /**
      * @var Collection<int, Tarefas>
      */
-    #[ORM\OneToMany(targetEntity: Tarefas::class, mappedBy: 'lista_id')]
+    #[ORM\OneToMany(targetEntity: Tarefas::class, mappedBy: 'lista')]
+
     private Collection $tarefas;
 
     public function __construct()
@@ -53,28 +64,51 @@ class Listas
         return $this;
     }
 
-    public function getUsuarios(): ?Usuarios
+    public function getUsuario(): ?Usuarios
     {
-        return $this->usuario_id;
+        return $this->usuario;
     }
 
-    public function setUsuarios(?Usuarios $usuario_id): static
+    public function setUsuario(?Usuarios $usuario): static
     {
-        $this->usuario_id = $usuario_id;
-
+        $this->usuario = $usuario;
         return $this;
     }
 
-     public function isAdmin(): bool
+    public function isPublico(): bool
     {
         return $this->is_publico;
     }
 
-    public function setIsAdmin(bool $isPublico): static
+    public function setIsPublico(bool $isPublico): static
     {
         $this->is_publico = $isPublico;
         return $this;
     }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+ 
 
     /**
      * @return Collection<int, Tarefas>

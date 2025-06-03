@@ -15,11 +15,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 final class UserController extends AbstractController
 {
     #[Route('/users', name: 'user_list', methods: ['GET'])]
-    public function index(UsuariosRepository $usuariosRepository): JsonResponse
+    public function index(UsuariosRepository $usuariosRepository): JsonResponse 
     {
-        return $this->json([
-            'data' => $usuariosRepository->findAll()
-        ]);
+        dd($usuariosRepository);
+        return $this->json(
+           $usuariosRepository->findAll(), 200, [], ['groups' => 'users']
+        );
 
     }
 

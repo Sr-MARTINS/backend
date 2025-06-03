@@ -21,7 +21,7 @@ class Tarefas
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?TarefaStatus $tarefa_status_id = null;
+    private ?TarefaStatus $tarefa_status = null;
 
     public function getId(): ?int
     {
@@ -54,12 +54,12 @@ class Tarefas
 
     public function getTarefaStatusId(): ?TarefaStatus
     {
-        return $this->tarefa_status_id;
+        return $this->tarefa_status;
     }
 
-    public function setTarefaStatusId(TarefaStatus $tarefa_status_id): static
+    public function setTarefaStatusId(TarefaStatus $tarefa_status): static
     {
-        $this->tarefa_status_id = $tarefa_status_id;
+        $this->tarefa_status = $tarefa_status;
 
         return $this;
     }

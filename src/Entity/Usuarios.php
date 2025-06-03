@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UsuariosRepository::class)]
 class Usuarios implements UserInterface, PasswordAuthenticatedUserInterface
@@ -16,17 +17,21 @@ class Usuarios implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('user')]
     private ?int $id = null;
 
+    #[Groups('user')]
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
+    #[Groups('user')]
     #[ORM\Column(length: 150)]
     private ?string $email = null;
 
     #[ORM\Column(length: 80)]
     private ?string $password = null;
 
+    #[Groups('user')]
     #[ORM\Column(type: 'boolean')]
     private bool $is_admin = false;
 
@@ -39,7 +44,8 @@ class Usuarios implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Listas>
      */
-    #[ORM\OneToMany(targetEntity: Listas::class, mappedBy: 'usuario_id', orphanRemoval: true)]
+    #[Groups('user')]
+    #[ORM\OneToMany(targetEntity: Listas::class, mappedBy: 'usuario', orphanRemoval: true)]
     private Collection $listas;
 
     public function __construct()
@@ -134,7 +140,7 @@ class Usuarios implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->listas->contains($lista)) {
             $this->listas->add($lista);
-            $lista->setUsuarios($this);
+            $lista->setUsuario($this);
         }
 
         return $this;
@@ -143,9 +149,8 @@ class Usuarios implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeLista(Listas $lista): static
     {
         if ($this->listas->removeElement($lista)) {
-            // set the owning side to null (unless already changed)
-            if ($lista->getUsuarios() === $this) {
-                $lista->setUsuarios(null);
+            if ($lista->getUsuario() === $this) {
+                $lista->setUsuario(null);
             }
         }
 
