@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Listas;
 use App\Entity\Tarefas;
 use App\Entity\TarefaStatus;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,11 +26,20 @@ final class TarefaController extends AbstractController
     public function create(Request $request, $id, EntityManagerInterface  $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        
+        $lista = $em->getRepository(Listas::class)->find($id);
+        if (!$lista) {
+            return $this->json(['error' => 'Lista não encontrada'], 404);
+        }
 
-         $status = $em->getRepository(TarefaStatus::class)->findOneBy(['nome' => $data['status']]);
+        $status = $em->getRepository(TarefaStatus::class)->findOneBy(['name' => $data['status']]);
+
+        if (!$status) {
+            return $this->json(['error' => 'Status não encontrado'], 404);
+        }
 
         $tarefa = new Tarefas();
-        $tarefa->setListaId($id);
+        $tarefa->setListaId($lista);
         $tarefa->setTitulo($data['titulo']);
         $tarefa->setTarefaStatus($status);
 
