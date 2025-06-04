@@ -14,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UserController extends AbstractController
 {
-    #[Route('/users', name: 'user_list', methods: ['GET'])]
+    #[Route('/users', name: 'users.index', methods: ['GET'])]
     public function index(UsuariosRepository $usuariosRepository): JsonResponse 
     {
         dd($usuariosRepository);
@@ -24,7 +24,7 @@ final class UserController extends AbstractController
 
     }
 
-    #[Route('/users/create', name: 'user_create', methods: ['POST'])]
+    #[Route('/users', name: 'users.create', methods: ['POST'])]
     public function create( Request $request, EntityManagerInterface $entityManagerInterface,
      UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
@@ -50,7 +50,7 @@ final class UserController extends AbstractController
         ], 201);
     }
 
-    #[Route('/users/update/{id}', name: 'user_update', methods: ['PUT'])]
+    #[Route('/users/{id}', name: 'users.update', methods: ['PUT'])]
     public function update( $id, Request $request,
      ManagerRegistry $doctrine,
      UsuariosRepository $usuariosRepository,
@@ -78,7 +78,7 @@ final class UserController extends AbstractController
         ], 201);
     }
 
-    #[Route('/users/delete/{id}', name: 'user_delete', methods: ['DELETE'])]
+    #[Route('/users/{id}', name: 'users.delete', methods: ['DELETE'])]
     public function delete( $id, UsuariosRepository $usuariosRepository): JsonResponse
     {
         $user = $usuariosRepository->find($id);
