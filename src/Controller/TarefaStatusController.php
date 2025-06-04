@@ -33,4 +33,21 @@ final class TarefaStatusController extends AbstractController
 
         return $this->json(['data' => $tarefaStatus], 201,[],  ['groups' => 'user']);
     }
+
+    #[Route('/status/{id}', name: 'status.update', methods: ['PUT'])]
+    public function update(Request $request, $id, EntityManagerInterface $em): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $tarefaStatus = $em->getRepository(TarefaStatus::class)->find($id);
+
+        $tarefaStatus->setName($data['name'] ?? '');
+
+        $em->persist($tarefaStatus);
+        $em->flush();
+
+        return $this->json(['data' => $tarefaStatus], 201,[],  ['groups' => 'user']);
+    }
+
+    
 }
