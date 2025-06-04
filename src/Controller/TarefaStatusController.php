@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\TarefaStatus;
-use App\Repository\TarefasRepository;
 use App\Repository\TarefaStatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,13 +12,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class TarefaStatusController extends AbstractController
 {
-    #[Route('/tarefa/status', name: 'app_tarefa_status')]
-    public function index(): JsonResponse
+    #[Route('/status', name: 'status.index')]
+    public function index(TarefaStatusRepository $tarefaStatusRepository): JsonResponse
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/TarefaStatusController.php',
-        ]);
+        return $this->json(
+           $tarefaStatusRepository->findAll(), 200, [], ['groups' => 'users']
+        );
+
     }
 
     #[Route('/status', name: 'status.create', methods: ['POST'])]
