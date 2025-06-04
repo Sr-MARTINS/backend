@@ -14,6 +14,7 @@ class Listas
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('user')]
     private ?int $id = null;
 
     #[Groups('user')]

@@ -13,45 +13,88 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class ListController extends AbstractController
 {
-    #[Route('/list', name: 'list', methods: ['GET'])]
+    
+    #[Route('/listas', name: 'listas.index', methods: ['GET'])]
     public function index(ListasRepository $listasRepository): JsonResponse
     {
-        $listas = $listasRepository->findAll();
+        //TODO: MELHORAR ISSO AQUI
+        $listas = $listasRepository->findBy(['usuario' => $this->getUser()]);
 
         return $this->json(['data' => $listas], 200,[],  ['groups' => 'user'] );
  
     } 
 
-    #[Route('/lista/creat', name: 'list_create', methods: ['POST'])]
+    #[Route('/listas', name: 'listas.create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em)
     {
         // dd($request->request->all());
         $data = json_decode($request->getContent(), true);
 
-        $usuarioId = $data['usuario_id'] ?? null;
-        $usuario = $em->getRepository(Usuarios::class)->find($usuarioId);
-
-        if (!$usuario) {
-            return new JsonResponse(['error' => 'Usuário não encontrado'], 404);
-        }
+        // $usuarioId = $data['usuario_id'] ?? null;
+        // $usuario = $em->getRepository(Usuarios::class)->find($usuarioId);
 
         $lista = new Listas();
         $lista->setTitulo($data['titulo'] ?? '');
         $lista->setIsPublico($data['is_publico'] ?? false);
-        $lista->setUsuario($usuario);
+        $lista->setUsuario($this->getUser());
         $lista->setCreatedAt(new \DateTimeImmutable());
         $lista->setUpdatedAt(new \DateTimeImmutable());
 
         $em->persist($lista);
         $em->flush();
 
-        return new JsonResponse(['id' => $lista->getId()], 201);
+        return $this->json(['data' => $lista], 201,[],  ['groups' => 'user']);
     }
 
-    #[Route('/list/delete/{id}', name: 'list_delete', methods:['DELETE'])]
+    #[Route('/listas/{id}', name: 'listas.show', methods:['GET'])]
+    public function show( $id, ListasRepository $listasRepository)
+    {
+        $list = $listasRepository->findOneBy([
+            "id" => $id,
+            "usuario" => $this->getUser()
+        ] );
+
+        if(null == $list) {
+            return new JsonResponse(['message' => 'Lista nao encontrada'], 404);
+        }
+
+
+        return $this->json(['data' => $list], 200,[],  ['groups' => 'user'] );
+    }
+
+    #[Route('/listas/{id}', name: 'listas.update', methods:['PUT'])]
+    public function update( $id, ListasRepository $listasRepository, Request $request, EntityManagerInterface $em)
+    {
+        $list = $listasRepository->findOneBy([
+            "id" => $id,
+            "usuario" => $this->getUser()
+        ] );
+
+        if(null == $list) {
+            return new JsonResponse(['message' => 'Lista nao encontrada'], 404);
+        }
+
+        $data = json_decode($request->getContent(), true);
+        $list->setTitulo($data['titulo'] ?? $list->getTitulo());
+        $list->setIsPublico($data['is_publico'] ?? $list->isPublico());
+       
+        $em->persist($list);
+        $em->flush();
+
+        return $this->json(['data' => $list], 200,[],  ['groups' => 'user'] );
+    }
+
+    #[Route('/listas/{id}', name: 'listas.delete', methods:['DELETE'])]
     public function delete( $id, ListasRepository $listasRepository)
     {
-        $list = $listasRepository->find($id);
+        $list = $listasRepository->findOneBy([
+            "id" => $id,
+            "usuario" => $this->getUser()
+        ] );
+
+        if(null == $list) {
+            return new JsonResponse(['message' => 'Lista nao encontrada'], 404);
+        }
 
         $listasRepository->remove($list, true);
 
