@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TarefasRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TarefasRepository::class)]
 class Tarefas
@@ -13,13 +14,16 @@ class Tarefas
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups('user')]
     #[ORM\ManyToOne(inversedBy: 'tarefas')]
     private ?Listas $lista_id = null;
 
+    #[Groups('user')]
     #[ORM\Column(length: 150)]
-    private ?string $tiulo = null;
+    private ?string $titulo = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Groups('user')]
+    #[ORM\ManyToOne(inversedBy: 'tarefas')]
     #[ORM\JoinColumn(nullable: false)]
     private ?TarefaStatus $tarefa_status = null;
 
@@ -36,31 +40,28 @@ class Tarefas
     public function setListaId(?Listas $lista_id): static
     {
         $this->lista_id = $lista_id;
-
         return $this;
     }
 
-    public function getTiulo(): ?string
+    public function getTitulo(): ?string
     {
-        return $this->tiulo;
+        return $this->titulo;
     }
 
-    public function setTiulo(string $tiulo): static
+    public function setTitulo(string $titulo): static
     {
-        $this->tiulo = $tiulo;
-
+        $this->titulo = $titulo;
         return $this;
     }
 
-    public function getTarefaStatusId(): ?TarefaStatus
+    public function getTarefaStatus(): ?TarefaStatus
     {
         return $this->tarefa_status;
     }
 
-    public function setTarefaStatusId(TarefaStatus $tarefa_status): static
+    public function setTarefaStatus(?TarefaStatus $tarefa_status): static
     {
         $this->tarefa_status = $tarefa_status;
-
         return $this;
     }
 }

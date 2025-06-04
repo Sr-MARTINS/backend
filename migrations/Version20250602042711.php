@@ -27,7 +27,7 @@ final class Version20250602042711 extends AbstractMigration
             CREATE TABLE tarefa_status (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE tarefas (id INT AUTO_INCREMENT NOT NULL, lista_id INT DEFAULT NULL, tarefa_status_id INT NOT NULL, tiulo VARCHAR(150) NOT NULL, INDEX IDX_30B98ED594F06EEA (lista_id), UNIQUE INDEX UNIQ_30B98ED51C8001ED (tarefa_status_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
+            CREATE TABLE tarefas (id INT AUTO_INCREMENT NOT NULL, lista_id INT DEFAULT NULL, tarefa_status_id INT NOT NULL, titulo VARCHAR(150) NOT NULL, INDEX IDX_30B98ED594F06EEA (lista_id), UNIQUE INDEX UNIQ_30B98ED51C8001ED (tarefa_status_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE usuarios (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL, email VARCHAR(150) NOT NULL, password VARCHAR(80) NOT NULL, is_admin TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB

@@ -17,7 +17,7 @@ final class UserController extends AbstractController
     #[Route('/users', name: 'users.index', methods: ['GET'])]
     public function index(UsuariosRepository $usuariosRepository): JsonResponse 
     {
-        dd($usuariosRepository);
+        // dd($usuariosRepository);
         return $this->json(
            $usuariosRepository->findAll(), 200, [], ['groups' => 'users']
         );
@@ -66,6 +66,7 @@ final class UserController extends AbstractController
 
         $user->setName($data['name']);
         $user->setEmail($data['email']);
+        $user->setPassword($data['password']);
         $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
 
