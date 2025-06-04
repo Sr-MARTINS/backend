@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\TarefaStatus;
+use App\Repository\TarefasRepository;
+use App\Repository\TarefaStatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -49,5 +51,13 @@ final class TarefaStatusController extends AbstractController
         return $this->json(['data' => $tarefaStatus], 201,[],  ['groups' => 'user']);
     }
 
-    
+    #[Route('/status/{id}', name: 'status.delete', methods: ['DELETE'])]
+    public function delete( $id, TarefaStatusRepository $tarefaStatusRepository): JsonResponse
+    {
+        $status = $tarefaStatusRepository->find($id);
+
+        $tarefaStatusRepository->remove($status, true);
+
+        return $this->json([ 'message' => 'Status deletado']);
+    }
 }

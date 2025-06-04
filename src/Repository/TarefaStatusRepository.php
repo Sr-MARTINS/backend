@@ -16,6 +16,24 @@ class TarefaStatusRepository extends ServiceEntityRepository
         parent::__construct($registry, TarefaStatus::class);
     }
 
+    public function add(TarefaStatus $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(TarefaStatus $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+              $this->getEntityManager()->flush();
+        }
+    }
+
     //    /**
     //     * @return TarefaStatus[] Returns an array of TarefaStatus objects
     //     */
