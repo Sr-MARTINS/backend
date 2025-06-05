@@ -16,7 +16,7 @@ class Tarefas
 
     #[Groups('user')]
     #[ORM\ManyToOne(inversedBy: 'tarefas')]
-    private ?Listas $lista_id = null;
+    private ?Listas $lista = null;
 
     #[Groups('user')]
     #[ORM\Column(length: 150)]
@@ -34,12 +34,12 @@ class Tarefas
 
     public function getListaId(): ?Listas
     {
-        return $this->lista_id;
+        return $this->lista;
     }
 
-    public function setListaId(?Listas $lista_id): static
+    public function setListaId(?Listas $lista): static
     {
-        $this->lista_id = $lista_id;
+        $this->lista = $lista;
         return $this;
     }
 

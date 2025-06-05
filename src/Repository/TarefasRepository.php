@@ -16,6 +16,24 @@ class TarefasRepository extends ServiceEntityRepository
         parent::__construct($registry, Tarefas::class);
     }
 
+    public function add(Tarefas $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Tarefas $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+              $this->getEntityManager()->flush();
+        }
+    }
+
     //    /**
     //     * @return Tarefas[] Returns an array of Tarefas objects
     //     */

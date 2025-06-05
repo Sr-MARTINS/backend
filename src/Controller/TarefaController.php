@@ -14,13 +14,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class TarefaController extends AbstractController
 {
-    #[Route('/tarefa', name: 'app_tarefa')]
-    public function index(): JsonResponse
+    #[Route('/lista/{id}/tarefas', name: 'tarefa.index', methods: ['GET'])]
+    public function index(TarefasRepository $tarefasRepository): JsonResponse
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/TarefaController.php',
-        ]);
+        $tarefa = $tarefasRepository->findAll(['titulo' => $this->getUser()]);
+        // dd($tarefa);
+
+        return $this->json(['data' => $tarefa], 200,[],  ['groups' => 'user'] );
     }
 
     #[Route('/lista/{id}/tarefa', name: 'tarefa.create', methods: ['POST'])]
@@ -74,5 +74,15 @@ final class TarefaController extends AbstractController
         $em->flush();
 
         return $this->json(['data' => $tarefa], 201,[],  ['groups' => 'user']);
+    }
+
+    #[Route('/lista/{lista_id}/tarefa/{id}', name: 'tarefa.delet', methods: ['DELETE'])]
+    public function delete($id,TarefasRepository $tarefasRepository ): JsonResponse
+    {
+        $user = $tarefasRepository->find($id);
+
+        $tarefasRepository->remove($user, true);
+
+        return $this->json([ 'message' => 'User delet successfully']);
     }
 }

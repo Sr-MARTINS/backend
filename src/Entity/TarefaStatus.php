@@ -15,7 +15,7 @@ class TarefaStatus
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('user')]
+    // #[Groups('user')]
     private ?int $id = null;
 
     #[Groups('user')]
