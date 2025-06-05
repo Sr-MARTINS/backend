@@ -14,7 +14,7 @@ class Listas
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    // #[Groups('user')]
+    #[Groups('user')]
     private ?int $id = null;
 
     #[Groups('user')]
@@ -39,7 +39,7 @@ class Listas
     /**
      * @var Collection<int, Tarefas>
      */
-    #[ORM\OneToMany(targetEntity: Tarefas::class, mappedBy: 'lista')]
+    #[ORM\OneToMany(targetEntity: Tarefas::class, mappedBy: 'lista', cascade: ['persist', 'remove'], orphanRemoval: true)]
 
     private Collection $tarefas;
 

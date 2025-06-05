@@ -45,7 +45,7 @@ class Usuarios implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Listas>
      */
     #[Groups('user')]
-    #[ORM\OneToMany(targetEntity: Listas::class, mappedBy: 'usuario', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Listas::class, mappedBy: 'usuario', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $listas;
 
     public function __construct()

@@ -15,9 +15,9 @@ final class TarefaStatusController extends AbstractController
     #[Route('/status', name: 'status.index')]
     public function index(TarefaStatusRepository $tarefaStatusRepository): JsonResponse
     {
-        return $this->json(
-           $tarefaStatusRepository->findAll(), 200, [], ['groups' => 'users']
-        );
+        $status = $tarefaStatusRepository->findAll(['name' => $this->getUser()]);
+
+        return $this->json(['data' => $status], 200,[],  ['groups' => 'user'] );
 
     }
 

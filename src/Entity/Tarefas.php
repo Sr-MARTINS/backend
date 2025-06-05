@@ -12,6 +12,7 @@ class Tarefas
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('user')]
     private ?int $id = null;
 
     #[Groups('user')]
@@ -24,7 +25,7 @@ class Tarefas
 
     #[Groups('user')]
     #[ORM\ManyToOne(inversedBy: 'tarefas')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?TarefaStatus $tarefa_status = null;
 
     public function getId(): ?int
