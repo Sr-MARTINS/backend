@@ -18,7 +18,6 @@ final class TarefaController extends AbstractController
     public function index(TarefasRepository $tarefasRepository): JsonResponse
     {
         $tarefa = $tarefasRepository->findAll(['titulo' => $this->getUser()]);
-        // dd($tarefa);
 
         return $this->json(['data' => $tarefa], 200,[],  ['groups' => 'user'] );
     }
@@ -50,13 +49,21 @@ final class TarefaController extends AbstractController
         return $this->json(['data' => $tarefa], 201,[],  ['groups' => 'user']);
     }
 
+    #[Route('/lista/{lista_id}/tarefas/{id}', name: 'tarefa.show', methods: ['GET'])]
+    public function show($id, TarefasRepository $tarefasRepository): JsonResponse
+    {
+        $tarefa = $tarefasRepository->find($id);
+
+        return $this->json(['data' => $tarefa], 200,[],  ['groups' => 'user'] );
+    }
+
     #[Route('/lista/{lista_id}/tarefa/{id}', name: 'tarefa.update', methods: ['PUT'])]
     public function update($id ,Request $request, TarefasRepository $tarefasRepository , EntityManagerInterface  $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
         $tarefa = $tarefasRepository->find($id);
-        dd($tarefa);
+        
         if (!$tarefa) {
             return $this->json(['error' => 'Lista não encontrada'], 404);
         }
@@ -67,7 +74,9 @@ final class TarefaController extends AbstractController
             return $this->json(['error' => 'Status não encontrado'], 404);
         }
          
-        $tarefa->setTitulo($data['titulo'] ?? $tarefa);
+        if (!empty($data['titulo'])) {
+            $tarefa->setTitulo($data['titulo']);
+        }
         $tarefa->setTarefaStatus($status);
 
         $em->persist($tarefa);
