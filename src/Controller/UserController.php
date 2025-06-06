@@ -27,26 +27,30 @@ final class UserController extends AbstractController
     public function create( Request $request, EntityManagerInterface $entityManagerInterface,
      UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
+        $usuarioAdm = $this->getUser();
+
+        if(!$usuarioAdm->isAdmin()) {
+            return $this->json([
+                'message' => 'Você não tem permissão para essa ação.'
+            ]);
+        }
+
         $data = json_decode($request->getContent(), true);
 
         $user = new Usuarios();
         $user->setName($data['name']);
         $user->setEmail($data['email']);
-        $user->setPassword($data['password']);
-
         $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
-
-        $now = new \DateTime('now', new \DateTimeZone('America/Sao_Paulo'));
-        $user->setCreatedAt($now);
-        $user->setUpdatedAt($now);
+        $user->setIsAdmin($data['is_admin'] ?? false);
 
         $entityManagerInterface->persist($user);
         $entityManagerInterface->flush();
 
         return $this->json([
-            'message' => 'User created successfully',
+            'message' => 'Usuario criado com sucesso!.',
         ], 201);
+        
     }
 
     #[Route('/users/{id}', name: 'users.update', methods: ['PUT'])]
@@ -65,11 +69,9 @@ final class UserController extends AbstractController
 
         $user->setName($data['name']);
         $user->setEmail($data['email']);
-        $user->setPassword($data['password']);
         $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
         $user->setPassword($hashedPassword);
-
-        $user->setUpdatedAt(new \DateTime('now', new \DateTimeZone('America/Sao_Paulo')));
+        $user->setIsAdmin($data['is_admin']);
 
         $doctrine->getManager()->flush();
 

@@ -25,14 +25,15 @@ class Listas
     #[ORM\JoinColumn(nullable: false)]
     private ?Usuarios $usuario = null;
 
+    #[Groups('user')]
     #[ORM\Column(type: 'boolean')]
     private bool $is_publico = false;
 
-    #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $createdAt = null;
+     #[ORM\Column(name: 'created_at', type: 'datetime_immutable')]
+    private \DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $updatedAt = null;
+    #[ORM\Column(name: 'updated_at', type: 'datetime_immutable')]
+    private \DateTimeImmutable $updatedAt;
 
     
 
@@ -40,7 +41,7 @@ class Listas
      * @var Collection<int, Tarefas>
      */
     #[ORM\OneToMany(targetEntity: Tarefas::class, mappedBy: 'lista', cascade: ['persist', 'remove'], orphanRemoval: true)]
-
+    #[Groups('user')]
     private Collection $tarefas;
 
     public function __construct()

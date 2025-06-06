@@ -34,6 +34,19 @@ class ListasRepository extends ServiceEntityRepository
         }
     }
 
+    public function findLista($id, $user)
+    {
+        $lista =  $this->createQueryBuilder('l')
+            ->where('l.id = :id')
+            ->andWhere('l.usuario = :user OR l.is_publico = true')
+            ->setParameter('id', $id)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult();
+        
+            return $lista;
+    }
+
     //    /**
     //     * @return Listas[] Returns an array of Listas objects
     //     */

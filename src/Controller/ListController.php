@@ -27,11 +27,7 @@ final class ListController extends AbstractController
     #[Route('/listas', name: 'listas.create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em)
     {
-        // dd($request->request->all());
         $data = json_decode($request->getContent(), true);
-
-        // $usuarioId = $data['usuario_id'] ?? null;
-        // $usuario = $em->getRepository(Usuarios::class)->find($usuarioId);
 
         $lista = new Listas();
         $lista->setTitulo($data['titulo'] ?? '');
@@ -49,10 +45,7 @@ final class ListController extends AbstractController
     #[Route('/listas/{id}', name: 'listas.show', methods:['GET'])]
     public function show( $id, ListasRepository $listasRepository)
     {
-        $list = $listasRepository->findOneBy([
-            "id" => $id,
-            "usuario" => $this->getUser()
-        ] );
+        $list = $listasRepository->findLista($id, $this->getUser());
 
         if(null == $list) {
             return new JsonResponse(['message' => 'Lista nao encontrada'], 404);
@@ -98,6 +91,6 @@ final class ListController extends AbstractController
 
         $listasRepository->remove($list, true);
 
-        return $this->json([ 'message' => 'List delet successfully']);
+        return $this->json([ 'message' => 'Lista deletada com successo']);
     }
 }

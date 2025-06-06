@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Listas;
 use App\Entity\Tarefas;
 use App\Entity\TarefaStatus;
+use App\Repository\ListasRepository;
 use App\Repository\TarefasRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,24 +16,34 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class TarefaController extends AbstractController
 {
     #[Route('/lista/{id}/tarefas', name: 'tarefa.index', methods: ['GET'])]
-    public function index(TarefasRepository $tarefasRepository): JsonResponse
+    public function index($id, ListasRepository $listasRepository ): JsonResponse
     {
-        $tarefa = $tarefasRepository->findAll(['titulo' => $this->getUser()]);
+        $lista = $listasRepository->findOneBy(['id' => $id, 'usuario' => $this->getUser() ]);
 
-        return $this->json(['data' => $tarefa], 200,[],  ['groups' => 'user'] );
+        if(null == $lista) {
+            return $this->json([
+                'message' => 'Lista não encontrada'
+            ], 404);
+        }
+
+        return $this->json(['data' => $lista->getTarefas()], 200,[],  ['groups' => 'user'] );
     }
 
-    #[Route('/lista/{id}/tarefa', name: 'tarefa.create', methods: ['POST'])]
-    public function create(Request $request, $id, EntityManagerInterface  $em): JsonResponse
+    #[Route('/lista/{lista_id}/tarefas', name: 'tarefa.create', methods: ['POST'])]
+    public function create( $lista_id, Request $request, EntityManagerInterface  $em, ListasRepository $listasRepository): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         
-        $lista = $em->getRepository(Listas::class)->find($id);
+        $lista = $listasRepository->findOneBy([
+            'id' => $lista_id,
+            'usuario' => $this->getUser()
+        ]);
+
         if (!$lista) {
             return $this->json(['error' => 'Lista não encontrada'], 404);
         }
 
-        $status = $em->getRepository(TarefaStatus::class)->findOneBy(['name' => $data['status']]);
+        $status = $em->getRepository(TarefaStatus::class)->find($data['status']);
 
         if (!$status) {
             return $this->json(['error' => 'Status não encontrado'], 404);
@@ -50,25 +61,65 @@ final class TarefaController extends AbstractController
     }
 
     #[Route('/lista/{lista_id}/tarefas/{id}', name: 'tarefa.show', methods: ['GET'])]
-    public function show($id, TarefasRepository $tarefasRepository): JsonResponse
+    public function show($lista_id, $id, ListasRepository $listasRepository ,TarefasRepository $tarefasRepository): JsonResponse
     {
+
+        $lista = $listasRepository->findOneBy(['id' => $lista_id, 'usuario' => $this->getUser()]);
+
+        if (!$lista) {
+            return $this->json(['error' => 'Status não encontrado'], 404);
+        }
+
         $tarefa = $tarefasRepository->find($id);
 
         return $this->json(['data' => $tarefa], 200,[],  ['groups' => 'user'] );
     }
 
-    #[Route('/lista/{lista_id}/tarefa/{id}', name: 'tarefa.update', methods: ['PUT'])]
-    public function update($id ,Request $request, TarefasRepository $tarefasRepository , EntityManagerInterface  $em): JsonResponse
+    #[Route('/lista/{lista_id}/tarefas/{id}/status', name: 'tarefa.status', methods: ['PUT'])]
+    public function status($lista_id, $id, Request $request ,ListasRepository $listasRepository ,TarefasRepository $tarefasRepository, EntityManagerInterface  $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
-        $tarefa = $tarefasRepository->find($id);
-        
-        if (!$tarefa) {
+        $lista = $listasRepository->findOneBy(['id' => $lista_id, 'usuario' => $this->getUser()]);
+
+        if (!$lista) {
             return $this->json(['error' => 'Lista não encontrada'], 404);
         }
 
-        $status = $em->getRepository(TarefaStatus::class)->findOneBy(['name' => $data['status']]);
+        $tarefa = $tarefasRepository->find($id);
+
+        $status = $em->getRepository(TarefaStatus::class)->find($data['status']);
+
+        if (!$status) {
+            return $this->json(['error' => 'Status não encontrado'], 404);
+        }
+         
+        if (!empty($data['titulo'])) {
+            $tarefa->setTitulo($data['titulo']);
+        }
+        $tarefa->setTarefaStatus($status);
+
+        $em->persist($tarefa);
+        $em->flush();
+
+        return $this->json(['data' => $tarefa], 201,[],  ['groups' => 'user']);
+    }
+
+    #[Route('/lista/{lista_id}/tarefa/{id}', name: 'tarefa.update', methods: ['PUT'])]
+    public function update($lista_id, $id, Request $request, TarefasRepository $tarefasRepository,
+    ListasRepository $listasRepository, EntityManagerInterface  $em): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $lista = $listasRepository->findOneBy(['id' => $lista_id, 'usuario' => $this->getUser()]);
+
+        if (!$lista) {
+            return $this->json(['error' => 'Lista não encontrada'], 404);
+        }
+
+        $tarefa = $tarefasRepository->find($id);
+
+        $status = $em->getRepository(TarefaStatus::class)->find($data['status']);
 
         if (!$status) {
             return $this->json(['error' => 'Status não encontrado'], 404);
@@ -86,12 +137,18 @@ final class TarefaController extends AbstractController
     }
 
     #[Route('/lista/{lista_id}/tarefa/{id}', name: 'tarefa.delet', methods: ['DELETE'])]
-    public function delete($id,TarefasRepository $tarefasRepository ): JsonResponse
+    public function delete($lista_id, $id, TarefasRepository $tarefasRepository ,ListasRepository $listasRepository ): JsonResponse
     {
-        $user = $tarefasRepository->find($id);
+        $lista = $listasRepository->findOneBy(['id' => $lista_id, 'usuario' => $this->getUser()]);
+        
+        if (!$lista) {
+            return $this->json(['error' => 'Lista não encontrada'], 404);
+        }
 
-        $tarefasRepository->remove($user, true);
+        $tarefa = $tarefasRepository->find($id);
 
-        return $this->json([ 'message' => 'User delet successfully']);
+        $tarefasRepository->remove($tarefa, true);
+
+        return $this->json([ 'message' => 'Tarefa deletada com successo']);
     }
 }
