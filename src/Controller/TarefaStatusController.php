@@ -53,9 +53,9 @@ final class TarefaStatusController extends AbstractController
     #[Route('/status/{id}', name: 'status.delete', methods: ['DELETE'])]
     public function delete( $id, TarefaStatusRepository $tarefaStatusRepository): JsonResponse
     {
-        $status = $tarefaStatusRepository->find($id);
+        $tarefaStatus = $tarefaStatusRepository->find($id);
 
-        $tarefaStatusRepository->remove($status, true);
+        $tarefaStatusRepository->remove($tarefaStatus, true);
 
         return $this->json([ 'message' => 'Status deletado']);
     }

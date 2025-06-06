@@ -14,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UserController extends AbstractController
 {
-    #[Route('/users', name: 'users.index', methods: ['GET'])]
+    #[Route('/usuario', name: 'usuario.index', methods: ['GET'])]
     public function index(UsuariosRepository $usuariosRepository): JsonResponse 
     {
         $usuarios = $usuariosRepository->findAll(['name' => $this->getUser()]);
@@ -23,8 +23,8 @@ final class UserController extends AbstractController
 
     }
 
-    #[Route('/users', name: 'users.create', methods: ['POST'])]
-    public function create( Request $request, EntityManagerInterface $entityManagerInterface,
+    #[Route('/usuario', name: 'usuario.create', methods: ['POST'])]
+    public function create( Request $request, EntityManagerInterface $em,
      UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         $usuarioAdm = $this->getUser();
@@ -37,15 +37,15 @@ final class UserController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
-        $user = new Usuarios();
-        $user->setName($data['name']);
-        $user->setEmail($data['email']);
-        $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
-        $user->setPassword($hashedPassword);
-        $user->setIsAdmin($data['is_admin'] ?? false);
+        $usuario = new Usuarios();
+        $usuario->setName($data['name']);
+        $usuario->setEmail($data['email']);
+        $hashedPassword = $passwordHasher->hashPassword($usuario, $data['password']);
+        $usuario->setPassword($hashedPassword);
+        $usuario->setIsAdmin($data['is_admin'] ?? false);
 
-        $entityManagerInterface->persist($user);
-        $entityManagerInterface->flush();
+        $$em->persist($usuario);
+        $$em->flush();
 
         return $this->json([
             'message' => 'Usuario criado com sucesso!.',
@@ -53,7 +53,7 @@ final class UserController extends AbstractController
         
     }
 
-    #[Route('/users/{id}', name: 'users.update', methods: ['PUT'])]
+    #[Route('/usuario/{id}', name: 'usuario.update', methods: ['PUT'])]
     public function update( $id, Request $request,
      ManagerRegistry $doctrine,
      UsuariosRepository $usuariosRepository,
@@ -61,32 +61,32 @@ final class UserController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $user = $usuariosRepository->find($id);
+        $usuario = $usuariosRepository->find($id);
 
-        if (!$user) {
+        if (!$usuario) {
             return $this->json(['error' => 'Usuário não encontrado'], 404);
         }
 
-        $user->setName($data['name']);
-        $user->setEmail($data['email']);
-        $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
-        $user->setPassword($hashedPassword);
-        $user->setIsAdmin($data['is_admin']);
+        $usuario->setName($data['name']);
+        $usuario->setEmail($data['email']);
+        $hashedPassword = $passwordHasher->hashPassword($usuario, $data['password']);
+        $usuario->setPassword($hashedPassword);
+        $usuario->setIsAdmin($data['is_admin']);
 
         $doctrine->getManager()->flush();
 
         return $this->json([
-            'message' => 'User edit successfully',
+            'message' => 'Usuario editado com sucesso',
         ], 201);
     }
 
-    #[Route('/users/{id}', name: 'users.delete', methods: ['DELETE'])]
+    #[Route('/usuario/{id}', name: 'usuario.delete', methods: ['DELETE'])]
     public function delete( $id, UsuariosRepository $usuariosRepository): JsonResponse
     {
-        $user = $usuariosRepository->find($id);
+        $usuario = $usuariosRepository->find($id);
 
-        $usuariosRepository->remove($user, true);
+        $usuariosRepository->remove($usuario, true);
 
-        return $this->json([ 'message' => 'User delet successfully']);
+        return $this->json([ 'message' => 'Usuario deletado com sucesso']);
     }
 }

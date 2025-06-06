@@ -17,7 +17,6 @@ final class ListController extends AbstractController
     #[Route('/listas', name: 'listas.index', methods: ['GET'])]
     public function index(ListasRepository $listasRepository): JsonResponse
     {
-        //TODO: MELHORAR ISSO AQUI
         $listas = $listasRepository->findBy(['usuario' => $this->getUser()]);
 
         return $this->json(['data' => $listas], 200,[],  ['groups' => 'user'] );

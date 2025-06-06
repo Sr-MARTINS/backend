@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Listas;
 use App\Entity\Tarefas;
 use App\Entity\TarefaStatus;
 use App\Repository\ListasRepository;
