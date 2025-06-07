@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TarefaStatusRepository::class)]
 class TarefaStatus
@@ -18,6 +18,12 @@ class TarefaStatus
     // #[Groups('user')]
     private ?int $id = null;
 
+    #[Assert\Length(
+        min: 3,
+        max: 150,
+        minMessage: 'O nome deve ter no minimo: 3 caracters',
+        maxMessage: 'O nome deve ter no maximo: 50 caracters',
+    )]
     #[Groups('user')]
     #[ORM\Column(length: 50)]
     private ?string $name = null;
@@ -68,7 +74,6 @@ class TarefaStatus
     public function removeTarefa(Tarefas $tarefa): static
     {
         if ($this->tarefas->removeElement($tarefa)) {
-            // Set the owning side to null (unless already changed)
             if ($tarefa->getTarefaStatus() === $this) {
                 $tarefa->setTarefaStatus(null);
             }

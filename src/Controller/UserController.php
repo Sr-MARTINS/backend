@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class UserController extends AbstractController
 {
@@ -25,7 +26,7 @@ final class UserController extends AbstractController
 
     #[Route('/usuario', name: 'usuario.create', methods: ['POST'])]
     public function create( Request $request, EntityManagerInterface $em,
-     UserPasswordHasherInterface $passwordHasher): JsonResponse
+     UserPasswordHasherInterface $passwordHasher, ValidatorInterface $validator): JsonResponse
     {
         $usuarioAdm = $this->getUser();
 
@@ -44,8 +45,26 @@ final class UserController extends AbstractController
         $usuario->setPassword($hashedPassword);
         $usuario->setIsAdmin($data['is_admin'] ?? false);
 
-        $$em->persist($usuario);
-        $$em->flush();
+        $erros = $validator->validate($usuario);
+
+        if(count($erros) > 0) {
+            $mensagens = [];
+
+            foreach ($erros as $violacao) {
+                $mensagens[] = [
+                    'campo' => $violacao->getPropertyPath(),
+                    'mensagem' => $violacao->getMessage()
+                ];
+            }
+
+            return $this->json([
+                'message' => 'Existem erros de validação.',
+                'errors' => $mensagens
+            ], 400);
+        }
+
+        $em->persist($usuario);
+        $em->flush();
 
         return $this->json([
             'message' => 'Usuario criado com sucesso!.',
@@ -54,10 +73,8 @@ final class UserController extends AbstractController
     }
 
     #[Route('/usuario/{id}', name: 'usuario.update', methods: ['PUT'])]
-    public function update( $id, Request $request,
-     ManagerRegistry $doctrine,
-     UsuariosRepository $usuariosRepository,
-     UserPasswordHasherInterface $passwordHasher): JsonResponse
+    public function update( $id, Request $request,ManagerRegistry $doctrine,
+     UsuariosRepository $usuariosRepository, UserPasswordHasherInterface $passwordHasher,ValidatorInterface $validator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -72,6 +89,24 @@ final class UserController extends AbstractController
         $hashedPassword = $passwordHasher->hashPassword($usuario, $data['password']);
         $usuario->setPassword($hashedPassword);
         $usuario->setIsAdmin($data['is_admin']);
+
+        $erros = $validator->validate($usuario);
+
+        if(count($erros) > 0) {
+            $mensagens = [];
+
+            foreach ($erros as $violacao) {
+                $mensagens[] = [
+                    'campo' => $violacao->getPropertyPath(),
+                    'mensagem' => $violacao->getMessage()
+                ];
+            }
+
+            return $this->json([
+                'message' => 'Existem erros de validação.',
+                'errors' => $mensagens
+            ], 400);
+        }
 
         $doctrine->getManager()->flush();
 

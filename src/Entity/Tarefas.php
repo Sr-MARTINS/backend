@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\TarefasRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TarefasRepository::class)]
 class Tarefas
@@ -19,6 +20,12 @@ class Tarefas
     #[ORM\ManyToOne(inversedBy: 'tarefas')]
     private ?Listas $lista = null;
 
+    #[Assert\Length(
+        min: 3,
+        max: 150,
+        minMessage: 'O nome deve ter no minimo: 3 caracters',
+        maxMessage: 'O nome deve ter no maximo: 50 caracters',
+    )]
     #[Groups('user')]
     #[ORM\Column(length: 150)]
     private ?string $titulo = null;

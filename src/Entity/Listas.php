@@ -7,6 +7,8 @@ use App\Repository\ListasRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: ListasRepository::class)]
 class Listas
@@ -17,6 +19,12 @@ class Listas
     #[Groups('user')]
     private ?int $id = null;
 
+    #[Assert\Length(
+        min: 3,
+        max: 150,
+        minMessage: 'O campo deve ter no minimo: 3 caracters',
+        maxMessage: 'O campo deve ter no maximo: 50 caracters',
+    )]
     #[Groups('user')]
     #[ORM\Column(length: 150)]
     private ?string $titulo = null;
@@ -25,6 +33,7 @@ class Listas
     #[ORM\JoinColumn(nullable: false)]
     private ?Usuarios $usuario = null;
 
+    #[Assert\Type(type: 'bool', message: 'O valor deve ser verdadeiro ou falso (true ou false).')]
     #[Groups('user')]
     #[ORM\Column(type: 'boolean')]
     private bool $is_publico = false;
@@ -133,7 +142,6 @@ class Listas
     public function removeTarefa(Tarefas $tarefa): static
     {
         if ($this->tarefas->removeElement($tarefa)) {
-            // set the owning side to null (unless already changed)
             if ($tarefa->getListaId() === $this) {
                 $tarefa->setListaId(null);
             }

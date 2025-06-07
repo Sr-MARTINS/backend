@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class TarefaStatusController extends AbstractController
 {
@@ -22,12 +23,30 @@ final class TarefaStatusController extends AbstractController
     }
 
     #[Route('/status', name: 'status.create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em): JsonResponse
+    public function create(Request $request, EntityManagerInterface $em,
+     ValidatorInterface $validator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
         $tarefaStatus = new TarefaStatus();
         $tarefaStatus->setName($data['name']);
+
+        $erro = $validator->validate($tarefaStatus);
+
+        if(count($erro) > 0) {
+            $mensagens = [];
+
+            foreach ($erro as $violacao) {
+                $mensagens[] = [
+                    'mensagem' => $violacao->getMessage()
+                ];
+            }
+
+            return $this->json([
+                'message' => 'Existem erros de validação.',
+                'errors' => $mensagens
+            ], 400);
+        }
 
         $em->persist($tarefaStatus);
         $em->flush();
@@ -36,13 +55,31 @@ final class TarefaStatusController extends AbstractController
     }
 
     #[Route('/status/{id}', name: 'status.update', methods: ['PUT'])]
-    public function update(Request $request, $id, EntityManagerInterface $em): JsonResponse
+    public function update(Request $request, $id, EntityManagerInterface $em,
+    ValidatorInterface $validator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
         $tarefaStatus = $em->getRepository(TarefaStatus::class)->find($id);
 
-        $tarefaStatus->setName($data['name'] ?? '');
+        $tarefaStatus->setName($data['name'] ?? $tarefaStatus->getName());
+
+        $erro = $validator->validate($tarefaStatus);
+
+        if(count($erro) > 0) {
+            $mensagens = [];
+
+            foreach ($erro as $violacao) {
+                $mensagens[] = [
+                    'mensagem' => $violacao->getMessage()
+                ];
+            }
+
+            return $this->json([
+                'message' => 'Existem erros de validação.',
+                'errors' => $mensagens
+            ], 400);
+        }
 
         $em->persist($tarefaStatus);
         $em->flush();

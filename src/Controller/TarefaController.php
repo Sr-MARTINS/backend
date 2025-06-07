@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class TarefaController extends AbstractController
@@ -29,7 +30,8 @@ final class TarefaController extends AbstractController
     }
 
     #[Route('/lista/{lista_id}/tarefas', name: 'tarefa.create', methods: ['POST'])]
-    public function create( $lista_id, Request $request, EntityManagerInterface  $em, ListasRepository $listasRepository): JsonResponse
+    public function create( $lista_id, Request $request, EntityManagerInterface  $em,
+     ListasRepository $listasRepository, ValidatorInterface $validator): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         
@@ -52,6 +54,23 @@ final class TarefaController extends AbstractController
         $tarefa->setListaId($lista);
         $tarefa->setTitulo($data['titulo']);
         $tarefa->setTarefaStatus($status);
+
+        $erros = $validator->validate($tarefa);
+
+        if(count($erros) > 0) {
+            $mensagens = [];
+
+            foreach ($erros as $violacao) {
+                $mensagens[] = [
+                    'mensagem' => $violacao->getMessage()
+                ];
+            }
+
+            return $this->json([
+                'message' => 'Existem erros de validação.',
+                'errors' => $mensagens
+            ], 400);
+        }
 
         $em->persist($tarefa);
         $em->flush();

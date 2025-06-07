@@ -15,18 +15,14 @@ final class ApiLoginController extends AbstractController
     #[Route('/login', name: 'api_login', methods: ['POST'])]
     public function index(#[CurrentUser] ?Usuarios $user, JWTTokenManagerInterface $jwt): JsonResponse
     {
-        // dd("oi");
         if (null === $user) {
             return $this->json([
                 'message' => 'missing credentials',
             ], Response::HTTP_UNAUTHORIZED);
         }
-        
-        // $token = $jwt->create($user); // somehow create an API token for $user
-
+     
         return $this->json([
             'user'  => $user->getUserIdentifier(),
-            // 'token' => $token,
         ]);
     }
 }
