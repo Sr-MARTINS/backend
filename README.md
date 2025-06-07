@@ -1,4 +1,4 @@
-# Desafio Pigz
+# Desafio Pigz.
 Este projeto é uma solução para o desafio proposto pela Pigz. Ele foi desenvolvido com o objetivo de atender aos requisitos especificados e demonstrar habilidades técnicas.
 
 ## Funcionalidades
