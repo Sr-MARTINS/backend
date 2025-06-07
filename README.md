@@ -10,7 +10,12 @@ Este projeto é uma solução para o desafio proposto pela Pigz. Ele foi desenvo
 + Remover uma tarefa
 + Somente pessoas autorizadas poderão cadastrar outros usuarios
 
-## 
+## Requisitos
+
+- PHP >= 8.1
+- Composer
+- Symfony CLI 
+- MySQL 
 
 ## Como Rodar o Projeto 
 Siga os passos abiaxo para configurar e executar o projeto:
@@ -20,15 +25,23 @@ Siga os passos abiaxo para configurar e executar o projeto:
 git clone https://github.com/Sr-MARTINS/teste-pigz.git <br>
 cd teste-pigz
 ```
-2. Rodar as fixtures:
+2.Instale as dependências
+```
+composer install
+```
+3. Configure o .env
+```
+DATABASE_URL="mysql://root:@127.0.0.1:3306/test_pigz?serverVersion=8.0.32&charset=utf8mb4"
+```
+4. Execute as fixures do banco de dados com o seguinte comando:
 ```
 php bin/console doctrine:fixtures:load
 ```
-3. Starte o servidor:
+5. Inicie o servidor local
 ```
-symfony serve:start
-```
+symfony server:start
 
+```
 ### Login de usuario
 ```
 {
