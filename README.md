@@ -40,7 +40,6 @@ php bin/console doctrine:fixtures:load
 5. Inicie o servidor local
 ```
 symfony server:start
-
 ```
 ### Login de usuario
 ```
