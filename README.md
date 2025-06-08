@@ -27,7 +27,7 @@ cd teste-pigz
 ```
 2.Instale as dependências
 ```
-composer install
+composer install --ignore-platform-reqs
 ```
 3. Configure o .env
 ```
