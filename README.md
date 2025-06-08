@@ -33,11 +33,17 @@ composer install
 ```
 DATABASE_URL="mysql://root:@127.0.0.1:3306/test_pigz?serverVersion=8.0.32&charset=utf8mb4"
 ```
-4. Execute as fixures do banco de dados com o seguinte comando:
+4. Crie o banco de dados e execute as migrations
+```
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+```
+
+6. Execute as fixures do banco de dados com o seguinte comando:
 ```
 php bin/console doctrine:fixtures:load
 ```
-5. Inicie o servidor local
+6. Inicie o servidor local
 ```
 symfony server:start
 ```
