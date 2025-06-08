@@ -54,3 +54,9 @@ symfony server:start
     "password": 123456
 }
 ```
+
+### Rotas
+Caso necessario deixei salvo um arquivo do insomnia que pode ser usado para teste de API. O arquivo esta localizado em ´doc/insomnia_api.json´.
+
+Listagem de rotas do symfony
+![rotas](./doc/rotas.png)

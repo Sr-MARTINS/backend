@@ -1,0 +1,717 @@
+type: collection.insomnia.rest/5.0
+name: My Collection
+meta:
+  id: wrk_d657b3de00d94a03ab817d269f788f92
+  created: 1744997604908
+  modified: 1744997604908
+collection:
+  - name: Agendai
+    meta:
+      id: fld_ca86cbf0abac43bcb4ebd764d8d0ab26
+      created: 1748388955801
+      modified: 1748636312640
+      sortKey: -1748573664539
+    children:
+      - name: Users
+        meta:
+          id: fld_54f75d7bbe724f89b671cbde5b418077
+          created: 1748388998969
+          modified: 1748388998969
+          sortKey: -1748388998969
+      - name: Roles
+        meta:
+          id: fld_689b955efa0145609d1838caf4ef5ef4
+          created: 1748554657209
+          modified: 1748554657209
+          sortKey: -1748554657209
+  - name: CRUD-API
+    meta:
+      id: fld_baaafcc728c6421db8e7fc92ebed290d
+      created: 1748573664439
+      modified: 1748636309554
+      sortKey: -1748573664439
+  - name: Laravel API - curso
+    meta:
+      id: fld_4225f81708874c019b17d6da7f4cd1d4
+      created: 1748636377570
+      modified: 1748636377570
+      sortKey: -1748636377570
+  - name: teste
+    meta:
+      id: fld_09937375cffe469185459e5ef48c79da
+      created: 1748869530024
+      modified: 1749254293995
+      sortKey: -1748869530025
+    children:
+      - name: User
+        meta:
+          id: fld_99d57dd003f14e008b0db467588ee1ec
+          created: 1748897356518
+          modified: 1748897383990
+          sortKey: -1748897356518
+        children:
+          - url: "{{ _.URL }}/api/usuario"
+            name: /usuario
+            meta:
+              id: req_8c011922afbc4badb4b3e4606dd53041
+              created: 1748869539339
+              modified: 1749253409042
+              isPrivate: false
+              sortKey: -1748901214341
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              token: "{{ _.token }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.URL }}/api/usuario"
+            name: /usuario
+            meta:
+              id: req_54e8ce6bf4044ed49e4bb8ca286b7763
+              created: 1748875464504
+              modified: 1749255238279
+              isPrivate: false
+              sortKey: -1748901214291
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"name": "jvcm",
+                	"email": "jvictor@gmail.com",
+                	"password": "12345",
+                	"is_admin": 1
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              token: "{{ _.token }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.URL }}/api/usuario/2"
+            name: /usuario/{id}
+            meta:
+              id: req_e179b3e51c8648ec872d83860733d070
+              created: 1748897385529
+              modified: 1749255457071
+              isPrivate: false
+              sortKey: -1748901214266
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"name": "vcitor",
+                	"email": "teste.update@gamil.com",
+                	"password": "12345",
+                	"is_admin": 1
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              token: "{{ _.token }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.URL }}/api/users/3"
+            name: /usuario/{id}
+            meta:
+              id: req_ecc9190d0d5a4cb988725230c59719d7
+              created: 1748901214241
+              modified: 1749177262281
+              isPrivate: false
+              sortKey: -1748901214241
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              token: "{{ _.token }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Listas
+        meta:
+          id: fld_dc1283161cdd4e7fb75f0a3d0f970410
+          created: 1748902665857
+          modified: 1748902665857
+          sortKey: -1748902665857
+        children:
+          - name: Tarefas
+            meta:
+              id: fld_bf3a18e930184095aac4ff67a6b2412f
+              created: 1749013761655
+              modified: 1749013761655
+              sortKey: -1749013761655
+            children:
+              - url: "{{ _.URL }}/api/lista/1/tarefas"
+                name: /lista/{lista_id}/tarefas
+                meta:
+                  id: req_3b3c15f306364ce084a395e080c9f12d
+                  created: 1749066760985
+                  modified: 1749254445548
+                  isPrivate: false
+                  sortKey: -1749066760985
+                method: GET
+                body:
+                  mimeType: application/json
+                  text: "\t"
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                  - name: User-Agent
+                    value: insomnia/11.1.0
+                authentication:
+                  type: bearer
+                  token: "{{ _.token }}"
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{ _.URL }}/api/lista/1/tarefa/1"
+                name: /lista/{lista_id}/tarefas/{id}
+                meta:
+                  id: req_16b725614aa24e17ab059e7007eca0e0
+                  created: 1749077758925
+                  modified: 1749254648850
+                  isPrivate: false
+                  sortKey: -1749023506164.5
+                method: PUT
+                body:
+                  mimeType: application/json
+                  text: |-
+                    {
+                    	"titulo": "",
+                    	"status": 2
+                    }
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                  - name: User-Agent
+                    value: insomnia/11.1.0
+                authentication:
+                  type: bearer
+                  token: "{{ _.token }}"
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{ _.URL }}/api/lista/1/tarefas"
+                name: /lista/{lista_id}/tarefas
+                meta:
+                  id: req_15f6e7d6c131409084a4dbede2db7fd8
+                  created: 1749085184648
+                  modified: 1749255575174
+                  isPrivate: false
+                  sortKey: -1749045133574.75
+                method: POST
+                body:
+                  mimeType: application/json
+                  text: |-
+                    {
+                    	"titulo": "Primeira tarefa",
+                    	"status": 2
+                    }
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                  - name: User-Agent
+                    value: insomnia/11.1.0
+                authentication:
+                  type: bearer
+                  token: "{{ _.token }}"
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{ _.URL }}/api/lista/5/tarefas/10"
+                name: /lista/{lista_id}/tarefas/{id}
+                meta:
+                  id: req_f20ac97a98154da2af6dde3b154d1728
+                  created: 1749089370009
+                  modified: 1749140371581
+                  isPrivate: false
+                  sortKey: -1749055947279.875
+                method: GET
+                body:
+                  mimeType: application/json
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                  - name: User-Agent
+                    value: insomnia/11.1.0
+                authentication:
+                  type: bearer
+                  token: "{{ _.token }}"
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{ _.URL }}/api/lista/5/tarefa/2"
+                name: /lista/{lista_id}/tarefas/{id}
+                meta:
+                  id: req_8f4e5be07bf74e4e962aac3f50ca2366
+                  created: 1749089515531
+                  modified: 1749162297166
+                  isPrivate: false
+                  sortKey: -1749001878754.25
+                method: DELETE
+                body:
+                  mimeType: application/json
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                  - name: User-Agent
+                    value: insomnia/11.1.0
+                authentication:
+                  type: bearer
+                  token: "{{ _.token }}"
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{ _.URL }}/api/lista/1/tarefas/2/status"
+                name: /lista/{lista_id}/tarefas/{id}/status
+                meta:
+                  id: req_f93ad0eb80184d5e95d4f8170777a64d
+                  created: 1749148788766
+                  modified: 1749176636325
+                  isPrivate: false
+                  sortKey: -1749012692459.375
+                method: PUT
+                body:
+                  mimeType: application/json
+                  text: |-
+                    {
+                    	"status": 3
+                    }
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                  - name: User-Agent
+                    value: insomnia/11.1.0
+                authentication:
+                  type: bearer
+                  token: "{{ _.token }}"
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+          - name: status
+            meta:
+              id: fld_aa67e60004f64f2da2c6decc66535d50
+              created: 1749067710036
+              modified: 1749067710036
+              sortKey: -1749067710036
+            children:
+              - url: "{{ _.URL }}/api/status"
+                name: /status
+                meta:
+                  id: req_3a1e217f8d9f43c4bb37ae393a3342c5
+                  created: 1749067715696
+                  modified: 1749069430994
+                  isPrivate: false
+                  sortKey: -1749067715696
+                method: GET
+                body:
+                  mimeType: application/json
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                  - name: User-Agent
+                    value: insomnia/11.1.0
+                authentication:
+                  type: bearer
+                  token: "{{ _.token }}"
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{ _.URL }}/api/status/1"
+                name: /status/{id}
+                meta:
+                  id: req_9c7ff87b964648059d8069be1c7e6dca
+                  created: 1749068280896
+                  modified: 1749255793281
+                  isPrivate: false
+                  sortKey: -1749067238340.5
+                method: PUT
+                body:
+                  mimeType: application/json
+                  text: |-
+                    {
+                    	"name": ""
+                    }
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                  - name: User-Agent
+                    value: insomnia/11.1.0
+                authentication:
+                  type: bearer
+                  token: "{{ _.token }}"
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{ _.URL }}/api/status/3"
+                name: /status/{id}
+                meta:
+                  id: req_6414d414658c4d9c8350b932175f64e3
+                  created: 1749068954792
+                  modified: 1749068986467
+                  isPrivate: false
+                  sortKey: -1749066999662.75
+                method: DELETE
+                body:
+                  mimeType: application/json
+                  text: |-
+                    {
+                    	"name": "pendente"
+                    }
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                  - name: User-Agent
+                    value: insomnia/11.1.0
+                authentication:
+                  type: bearer
+                  token: "{{ _.token }}"
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: "{{ _.URL }}/api/status"
+                name: /status
+                meta:
+                  id: req_3d561693427a4b089636f77c07cfb383
+                  created: 1749069409523
+                  modified: 1749255609269
+                  isPrivate: false
+                  sortKey: -1749067477018.25
+                method: POST
+                body:
+                  mimeType: application/json
+                  text: |-
+                    {
+                    	"name": ""
+                    }
+                headers:
+                  - name: Content-Type
+                    value: application/json
+                  - name: User-Agent
+                    value: insomnia/11.1.0
+                authentication:
+                  type: bearer
+                  token: "{{ _.token }}"
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+          - url: "{{ _.URL }}/api/listas"
+            name: /listas
+            meta:
+              id: req_55f06229ec774eac829ebd1692dc1437
+              created: 1748915275229
+              modified: 1749254327801
+              isPrivate: false
+              sortKey: -1748969965770
+            method: POST
+            body:
+              mimeType: application/json
+              text: |
+                {
+                  "titulo": "tarefa da noite",
+                  "is_publico": false
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              token: "{{ _.token }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.URL }}/api/listas"
+            name: /listas
+            meta:
+              id: req_78a7740b5bb84e2d9a2f93e7d86acd11
+              created: 1748963722160
+              modified: 1749008791618
+              isPrivate: false
+              sortKey: -1748969965795
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              token: "{{ _.token }}"
+              prefix: Bearer
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.URL }}/api/listas/4"
+            name: /listas/{id}
+            meta:
+              id: req_ab9935b3b8914f9da13f4905734b5b94
+              created: 1748969965695
+              modified: 1749131832943
+              isPrivate: false
+              sortKey: -1748969965695
+            method: DELETE
+            headers:
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              token: "{{ _.token }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.URL }}/api/listas/1"
+            name: /listas/{id}
+            meta:
+              id: req_4be3ad67eb044284add5613ff99ed5d7
+              created: 1749008746607
+              modified: 1749254394338
+              isPrivate: false
+              sortKey: -1748969965757.5
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              token: "{{ _.token }}"
+              prefix: Bearer
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.URL }}/api/listas/1"
+            name: /listas/{id}
+            meta:
+              id: req_0d10c0443ffd4710aedbd185b7f90058
+              created: 1749008772869
+              modified: 1749254417612
+              isPrivate: false
+              sortKey: -1748969965745
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"titulo": "tarefas",
+                	"is_publico": 2
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.1.0
+            authentication:
+              type: bearer
+              token: "{{ _.token }}"
+              prefix: Bearer
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: Login
+        meta:
+          id: fld_d5e9b9ae289f4259a1bc3ea3d06a8161
+          created: 1748980246930
+          modified: 1749254293995
+          sortKey: -1748980246930
+        children:
+          - url: "{{ _.URL }}/api/login"
+            name: /login
+            meta:
+              id: req_4b77e75bd3b943b5beb103d26561b6d3
+              created: 1748980251344
+              modified: 1749175438205
+              isPrivate: false
+              sortKey: -1748980251344
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"email": "admin@admin.com",
+                	"password": "123456"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - name: User-Agent
+                value: insomnia/11.1.0
+            scripts:
+              afterResponse: |-
+                const res = 	JSON.parse(insomnia.response.body);
+                if(res.token) {
+                	insomnia.environment.set('token', res.token)
+                }
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_dc6514b40bf1dac537b5290e61bc93548e51cd95
+    created: 1744997604926
+    modified: 1749254293989
+  cookies:
+    - id: a50c8747-be72-49be-92d7-976b30b3f208
+      key: XSRF-TOKEN
+      value: eyJpdiI6ImZ2SSs5RlhuWnkvUmlKOHk4MW1IUnc9PSIsInZhbHVlIjoiSE80RFJyTzdvREtYNGMrRTRrNElaTExIbitnQTQ1d1Q3a09Eb2thOThBQVcxTW5Gakp3UU15T2MyeWhCSEd4R0dyRllwR1ZwWWw2S1d2VzAybThhWmtXQ2dKWTc2Tmk2NGhsOThpbDBqai9WY2NWMjhjSHc5ZzB0TXNxUGFZN0giLCJtYWMiOiIxMmE3NzhhNDkyYjAxY2MwMjJjM2I3MjkzZjZjM2EzMjViZmM5MWQ3NmRlZjU3N2IwMWY2NzQ5NGJkYWFjNWU5IiwidGFnIjoiIn0%3D
+      domain: 127.0.0.1
+      path: /
+      secure: false
+      httpOnly: false
+      creation: 2025-05-29T23:39:00.815Z
+      hostOnly: true
+      lastAccessed: 2025-05-30T20:20:07.374Z
+    - id: 5b02971c-4a0a-41fc-b2d0-6e74ca456ba1
+      key: laravel_session
+      value: eyJpdiI6IlRrV1Q2d0xRZ05HZTllYkdSdk5XVHc9PSIsInZhbHVlIjoieGZ6Tm1BajBnS0VpMzRLdlZtUlQ5R1JxaWxSZ1JyZHVXcEVTcGsvS2V3K0hMTTBXNG5YRUxnVXhjVVRQOE9iQTRBdEVSekF0NXlNTndRcnpGZVVNVzFWazJrRHR5TTNZc1o5dllsaEJuWjVpZ2NxTWNOMWlsM2JUZGZuZDdDQUQiLCJtYWMiOiJkY2RjODY1ZmVmZDA4N2Q2ZjkyMmFlYTY0YTcxMDk3YWUwYTk3ZjVmOTIyNzQ5NDQxYjA4MjNmOThiMTcwYTI1IiwidGFnIjoiIn0%3D
+      domain: 127.0.0.1
+      path: /
+      secure: false
+      httpOnly: true
+      creation: 2025-05-29T23:39:00.819Z
+      hostOnly: true
+      lastAccessed: 2025-05-30T20:20:07.377Z
+    - id: 046521e3-be85-48b1-8d07-0d2e19c13b4e
+      key: PHPSESSID
+      value: 105n7s208545029rpg58m6lta8
+      domain: 127.0.0.1
+      path: /
+      secure: false
+      httpOnly: true
+      creation: 2025-06-04T00:20:20.746Z
+      hostOnly: true
+      lastAccessed: 2025-06-04T16:30:11.928Z
+environments:
+  name: Base Environment
+  meta:
+    id: env_dc6514b40bf1dac537b5290e61bc93548e51cd95
+    created: 1744997604922
+    modified: 1749254293992
+    isPrivate: false
+  data:
+    URL: http://127.0.0.1:8000
+    token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NDkyNTQyOTMsImV4cCI6MTc0OTI1Nzg5Mywicm9sZXMiOlsiUk9MRV9BRE1JTiJdLCJ1c2VybmFtZSI6ImFkbWluQGFkbWluLmNvbSJ9.gLz8OOf-CO5O2ws-z8KCwN4KIIzdb6WqTlEgNtyLkjOVB5AYS1Fx5grjER0TMhfD_UHe88qtMFcwV1YbCcwuO7ghz7SkG7u_y-2VCcFNP_b-93tgW96m5aFfYZOCsjntjTEtvlhIS-xywgl1v2S2yYEJV7vWX_j9bZs2bx0BBI6LiSxod_epBVcjw9ntlW6Sjw7vYkJYL5cGA9o6hQasvbNnJd5T0qgirqciRz0C37WknHRnRAAVEqFQQ9AzME-34yt6awUsCV5raH6LhHxGYil9cYCwcKV7iCnkms9tss2pqblBp_qHpAxBuXWGlW8vLhtSSr2e-AifWd6l1iA0TQGPK4_ikiTJyKXEbWfRm17Rz15grxKcBqOYXj0ct9gvH-EN2mA9tH2xBZniJNSC75d0PLybwsSAEuKpsOwP5-6qS5zCniqeE1HK0W-4QE7jX47KJCGhOAkYU5J6QdsZDPn96G5ETFI2HwLVXSfVrTK2D5U_mpre_ajr_yDqt5wWiLqojWO_U7is0bP1RH0AZEpoLkcr0KXpLrz41XleNkaPS-cw4WenDVx0RBHxsi_YTgBQgc0n3xi5cs89B8dJ9MldLQuKAeK-8bux5rDHIC5XBz545XBJxWofRGd0wq2IvR07mxHUbpVXj06cL-EzgSScLt4x1cGGXXRTrX0dgRU
+  subEnvironments:
+    - name: New Environment
+      meta:
+        id: env_1d2560b106ab4181b0ba752154441910
+        created: 1748217617061
+        modified: 1748217623507
+        isPrivate: false
+        sortKey: 1748217617061
