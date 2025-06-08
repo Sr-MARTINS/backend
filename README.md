@@ -22,7 +22,7 @@ Siga os passos abiaxo para configurar e executar o projeto:
 
 1. Clone o reposiório do projeto do GitHub: 
 ```
-git clone https://github.com/Sr-MARTINS/teste-pigz.git <br>
+git clone https://github.com/Sr-MARTINS/teste-pigz.git 
 cd teste-pigz
 ```
 2.Instale as dependências
